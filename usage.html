@@ -196,7 +196,104 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>GeneCascade is a modular pipeline for sequence analysis, primarily executed via the command line.</p>
+<pre class="console"><code>GeneCascade v1.0.0: Modular pipeline for sequence analysis.
+
+Usage: genecascade &lt;command&gt; [OPTIONS]
+
+  Commands:
+    run                       Run the GeneCascade analysis pipeline.
+    install                   Install/Update GeneCascade Apptainer image and databases.
+
+  Required Arguments for 'run':
+    -i, --input_sequences   Path to input sequence data (FASTA, directory, CSV, TSV, QS, RData)
+    -o, --output_dir_base   Base directory for all run outputs
+
+  Optional Core Input/Output &amp; Context Parameters for 'run':
+    -m, --metadata_file     Path to metadata file (TSV or QS). Auto-generated if not provided.
+    --genome_id_column      Metadata column for genome/MAG IDs (used in GC 6 context)
+    --sample_id_column      Metadata column for sample IDs (used in GC 6 context)
+    --condition_column      Metadata column for condition/niche IDs (used in GC 6 context)
+    --fdr_threshold         Global False Discovery Rate threshold (default: 0.05)
+    --apptainer_images_dir Path to Apptainer images (default: GeneCascade_root/apptainer_images)
+    --databases_directory Path to databases (default: GeneCascade_root/databases)
+    -f, --force_overwrite   Force overwrite of existing output directories for active analyses
+
+  Optional Performance Parameters for 'run':
+    -t, --threads           Number of threads (default: 16)
+    --memory                Memory limit for MMseqs2 (e.g., 10G, 0 for unlimited) (default: "0")
+    --future_globals_max_size_gb Max size for R future globals (GB) (default: 5)
+
+  Optional Skip Flags for 'run':
+    --skip_GC_01_preparation Skip GC 1 (Input Preparation)
+    --skip_GC_02_annotation  Skip GC 2 (Sequence Annotation)
+    --skip_GC_03_clustering  Skip GC 3 (Homology Clustering)
+    --skip_GC_04_master_table Skip GC 4 (Master Table Generation)
+    --skip_GC_05_core_features Skip GC 5 (Core Feature Analysis)
+    --skip_GC_06_cooccurrence Skip GC 6 (Co-occurrence Analysis)
+    --skip_GC_07_association  Skip GC 7 (Association Studies)
+
+  Optional General Abundance Parameters for 'run':
+    --abundance_type        Feature interpretation: 'binary', 'relative_abundance', 'absolute_abundance' (default: "binary")
+    --abundance_column      Metadata column for abundance values if not 'binary'.
+
+  Optional Parameters for GC 1 (Sequence Preparation) for 'run':
+    --sequence_type         Initial sequence type: 'protein' or 'nucleotide' (default: auto-detect in M1)
+
+  Optional Parameters for GC 2 (Annotation) for 'run':
+    --annotation_db_priority Annotation DB priority (e.g., "Swiss-Prot,TrEMBL") (default: "Swiss-Prot_TrEMBL")
+    -s, --sensitivity       Sensitivity for MMseqs2 (GC 02 &amp; 03) (default: 5.7)
+
+  Optional Parameters for GC 3 (Clustering) for 'run':
+    --min_sequence_identity Min sequence identity for clustering (MMseqs2 --min-seq-id) (default: 0.5)
+    --min_coverage          Min coverage for clustering (MMseqs2 -c or --min-cov) (default: 0.8)
+    --coverage_mode         Coverage mode for clustering (MMseqs2 --cov-mode) (default: 0)
+
+  Optional Parameters for GC 4 (Master Table Generation) for 'run':
+    --master_table_basename Basename for master data table (default: "master_data_table")
+
+  Optional Parameters for GC 5 (Core Feature Analysis) for 'run':
+    --core_feature_prevalence_threshold Prevalence threshold for core features (default: 0.9)
+
+  Optional Parameters for GC 6 (Co-occurrence Analysis) for 'run':
+    (Context for GC 6 is set by --genome_id_column, --sample_id_column, --condition_column listed above)
+    (Homologue Group Filters &amp; Pairwise Tests):
+      --cooc_correlation_method Correlation method for abundance: 'spearman' or 'pearson' (default: "spearman")
+      --min_hg_occurrence_absolute Min absolute HG presence (default: 10)
+      --min_hg_occurrence_fraction Min fractional HG presence (0.0-1.0, default: 0.01)
+      --max_hg_prevalence_percentage Max HG prevalence percentage (0-100, default: 99.0)
+      --min_pair_cooccurrence_absolute Min absolute pair co-occurrence (default: 5)
+      --min_pair_cooccurrence_fraction Min fractional pair co-occurrence (0.0-1.0, default: 0.005)
+      --min_hg_iqr_abundance    Min IQR for abundance modes (default: 0.0)
+      --min_correlation_metric  Min absolute pairwise correlation metric (default: 0.0)
+      --pairwise_test_chunk_size Pair processing chunk size for R helper (default: 1000000)
+    (Module Definition):
+      --min_positive_module_correlation Min positive correlation for module definition (default: 0.3)
+      --min_module_size         Min HGs for a module (default: 3)
+      --community_detection_method Community detection algorithm (e.g., 'cluster_louvain') (default: "cluster_louvain")
+      --core_module_strong_link_threshold Metric for strong links in core modules (default: 0.7)
+    (Competitive Pathway Analysis):
+      --inter_pathway_neg_metric_threshold Negative metric threshold for inter-pathway competition (default: -0.2)
+      --inter_pathway_min_neg_links Min negative links for inter-pathway competition (default: 1)
+      --vs_core_neg_metric_threshold Negative metric threshold for pathway vs. core competition (default: -0.3)
+      --vs_core_min_frac_members Min fraction members for pathway vs. core competition (default: 0.25)
+      --vs_core_min_distinct_core_hgs Min distinct core HGs competed with (default: 1)
+
+  Optional Parameters for GC 7 (Association Studies - MaAsLin3) for 'run':
+    --maaslin_fixed_effects     Comma-separated fixed effects (metadata columns) [REQUIRED for M7]
+    --maaslin_random_effects    Comma-separated random effects (metadata columns)
+    --maaslin_reference_levels  Semicolon-separated 'variable,ref_level;var2,ref2' for MaAsLin3.
+    --maaslin_observation_unit_column Metadata column for sample IDs (primary grouping) [REQUIRED for M7]
+    --maaslin_genome_id_column  Optional metadata column for genome IDs (e.g., for random effect).
+    --maaslin_analysis_target   Feature type: 'homologues' or 'pathways' (default: "homologues")
+    --maaslin_normalization     Normalization for MaAsLin3 (default: "TSS" for quantitative, "NONE" for binary)
+    --maaslin_transform         Transformation for MaAsLin3 (default: "LOG" for quantitative, "NONE" for binary)
+    --maaslin_standardize       Standardize continuous metadata ('TRUE' or 'FALSE') (default: "TRUE")
+    --maaslin_min_feature_prevalence_fraction Min sample fraction for feature presence (default: 0.05)
+    --maaslin_min_feature_abundance_sum Min total abundance for feature (non-binary) (default: 0)
+
+  Other Commands:
+    genecascade -h|--help         Show this help message and exit.
+    genecascade -v|--version      Show version information and exit.</code></pre>
 <section id="main-commands" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="main-commands"><span class="header-section-number">1</span> Main Commands</h2>
 <p>The <code>genecascade</code> script is the main entry point and accepts the following primary commands:</p>
@@ -210,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="genecascade-run" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="genecascade-run"><span class="header-section-number">2</span> <code>genecascade run</code></h2>
 <p>This command executes the main analysis pipeline.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">genecascade</span> run <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">genecascade</span> run <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="required-arguments-for-run" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="required-arguments-for-run"><span class="header-section-number">2.1</span> Required Arguments for <code>run</code></h3>
 <ul>
@@ -544,7 +641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="genecascade-install" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="genecascade-install"><span class="header-section-number">3</span> <code>genecascade install</code></h2>
 <p>This command launches the interactive installation utility.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">genecascade</span> install</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">genecascade</span> install</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This will present a menu to: - Perform a full installation (Apptainer image + All Databases + Add to PATH). - Install/Update the Apptainer image only. - Install/Update all databases only. - Add GeneCascade scripts to your system PATH. - Check system requirements (Apptainer, Disk Space).</p>
 <p>Refer to the <a href="./installation.html">Installation</a> page for more details.</p>
 </section>
