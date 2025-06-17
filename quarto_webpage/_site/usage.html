@@ -151,12 +151,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#quick-start-from-sequencing-files" id="toc-quick-start-from-sequencing-files" class="nav-link active" data-scroll-target="#quick-start-from-sequencing-files"><span class="header-section-number">1</span> Quick start (from sequencing files)</a></li>
-  <li><a href="#quick-start-from-assembly-files" id="toc-quick-start-from-assembly-files" class="nav-link" data-scroll-target="#quick-start-from-assembly-files"><span class="header-section-number">2</span> Quick start (from assembly files)</a></li>
-  <li><a href="#high-throughput-sbatch-set-up-from-sequencing-files" id="toc-high-throughput-sbatch-set-up-from-sequencing-files" class="nav-link" data-scroll-target="#high-throughput-sbatch-set-up-from-sequencing-files"><span class="header-section-number">3</span> High throughput SBATCH set-up (from sequencing files)</a></li>
-  <li><a href="#high-throughput-sbatch-set-up-from-assembly-files" id="toc-high-throughput-sbatch-set-up-from-assembly-files" class="nav-link" data-scroll-target="#high-throughput-sbatch-set-up-from-assembly-files"><span class="header-section-number">4</span> High throughput SBATCH set-up (from assembly files)</a></li>
-  <li><a href="#updating-straincascade" id="toc-updating-straincascade" class="nav-link" data-scroll-target="#updating-straincascade"><span class="header-section-number">5</span> Updating StrainCascade</a></li>
-  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats"><span class="header-section-number">6</span> CAVEATS</a></li>
+  <li><a href="#main-commands" id="toc-main-commands" class="nav-link active" data-scroll-target="#main-commands"><span class="header-section-number">1</span> Main Commands</a></li>
+  <li><a href="#genecascade-run" id="toc-genecascade-run" class="nav-link" data-scroll-target="#genecascade-run"><span class="header-section-number">2</span> <code>genecascade run</code></a>
+  <ul class="collapse">
+  <li><a href="#required-arguments-for-run" id="toc-required-arguments-for-run" class="nav-link" data-scroll-target="#required-arguments-for-run"><span class="header-section-number">2.1</span> Required Arguments for <code>run</code></a></li>
+  <li><a href="#optional-core-inputoutput-context-parameters-for-run" id="toc-optional-core-inputoutput-context-parameters-for-run" class="nav-link" data-scroll-target="#optional-core-inputoutput-context-parameters-for-run"><span class="header-section-number">2.2</span> Optional Core Input/Output &amp; Context Parameters for <code>run</code></a></li>
+  <li><a href="#optional-performance-parameters-for-run" id="toc-optional-performance-parameters-for-run" class="nav-link" data-scroll-target="#optional-performance-parameters-for-run"><span class="header-section-number">2.3</span> Optional Performance Parameters for <code>run</code></a></li>
+  <li><a href="#optional-skip-flags-for-run" id="toc-optional-skip-flags-for-run" class="nav-link" data-scroll-target="#optional-skip-flags-for-run"><span class="header-section-number">2.4</span> Optional Skip Flags for <code>run</code></a></li>
+  <li><a href="#optional-general-abundance-parameters-for-run" id="toc-optional-general-abundance-parameters-for-run" class="nav-link" data-scroll-target="#optional-general-abundance-parameters-for-run"><span class="header-section-number">2.5</span> Optional General Abundance Parameters for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-1-sequence-preparation-for-run" id="toc-optional-parameters-for-gc-1-sequence-preparation-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-1-sequence-preparation-for-run"><span class="header-section-number">2.6</span> Optional Parameters for GC 1 (Sequence Preparation) for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-2-annotation-for-run" id="toc-optional-parameters-for-gc-2-annotation-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-2-annotation-for-run"><span class="header-section-number">2.7</span> Optional Parameters for GC 2 (Annotation) for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-3-clustering-for-run" id="toc-optional-parameters-for-gc-3-clustering-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-3-clustering-for-run"><span class="header-section-number">2.8</span> Optional Parameters for GC 3 (Clustering) for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-4-master-table-generation-for-run" id="toc-optional-parameters-for-gc-4-master-table-generation-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-4-master-table-generation-for-run"><span class="header-section-number">2.9</span> Optional Parameters for GC 4 (Master Table Generation) for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-5-core-feature-analysis-for-run" id="toc-optional-parameters-for-gc-5-core-feature-analysis-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-5-core-feature-analysis-for-run"><span class="header-section-number">2.10</span> Optional Parameters for GC 5 (Core Feature Analysis) for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-6-co-occurrence-analysis-for-run" id="toc-optional-parameters-for-gc-6-co-occurrence-analysis-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-6-co-occurrence-analysis-for-run"><span class="header-section-number">2.11</span> Optional Parameters for GC 6 (Co-occurrence Analysis) for <code>run</code></a></li>
+  <li><a href="#optional-parameters-for-gc-7-association-studies---maaslin3-for-run" id="toc-optional-parameters-for-gc-7-association-studies---maaslin3-for-run" class="nav-link" data-scroll-target="#optional-parameters-for-gc-7-association-studies---maaslin3-for-run"><span class="header-section-number">2.12</span> Optional Parameters for GC 7 (Association Studies - MaAsLin3) for <code>run</code></a></li>
+  </ul></li>
+  <li><a href="#genecascade-install" id="toc-genecascade-install" class="nav-link" data-scroll-target="#genecascade-install"><span class="header-section-number">3</span> <code>genecascade install</code></a></li>
+  <li><a href="#help-and-version" id="toc-help-and-version" class="nav-link" data-scroll-target="#help-and-version"><span class="header-section-number">4</span> Help and Version</a></li>
   </ul>
 </nav>
     </div>
@@ -182,173 +194,369 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<pre class="console"><code>Usage: straincascade [OPTIONS]
-
-straincascade options:
-  -i FILE/DIR       Input reads file or directory (mutually exclusive with -a, default: empty)
-  -a FILE/DIR       Input assembly file or directory (mutually exclusive with -i, default: empty)
-  -o DIR            Output directory (default: current directory)
-  -s TYPE           Sequencing type (default: pacbio-hifi)
-                    Options: pacbio-raw | pacbio-corr | pacbio-hifi | nano-raw | nano-corr | nano-hq
-  -t INT            Number of threads (default: 32)
-  -e MODE           Execution mode (mutually exclusive with -b, default: standard)
-                    Options: minimal | efficient | standard | comprehensive | custom:modules
-  -b BUNDLE         Bundle name (mutually exclusive with -e, default: empty)
-                    Options: assembly | annotation | functional | phage
-  -r TYPE           Result type (default: main)
-                    Options: all | main | R
-  -f yes/no         Force overwrite of existing files (default: yes)
-  -l STRING         Locus tag (default: automatic)
-  --deterministic | --heuristic Choose deterministic to optimise for reproducibility"
-                                at cost of computation time (default: heuristic)"
-
-Update options:
-  -us, --update-software    Update StrainCascade software to the latest version
-  -uai, --update-images     Update all Apptainer images
-  -udb, --update-databases  Update all databases
-
-General options:
-  -h, --help                Show a more detailed help message
-  -v, --version             Show version information</code></pre>
-<section id="quick-start-from-sequencing-files" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="quick-start-from-sequencing-files"><span class="header-section-number">1</span> Quick start (from sequencing files)</h2>
-<p>To quickly run StrainCascade on a sequencing file from the command line interface, use the following minimal command:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-i</span> /path/to/your/input_file</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Note:</strong> Running StrainCascade is resource-intensive and will overwhelm standard desktop or laptop computers. For optimal performance, we strongly recommend using a high-performance computing (HPC) environment.</p>
-<p>For efficient execution, it’s recommended to submit pipeline jobs as a SLURM SBATCH job. Below is an example of a basic SLURM submission script. Be sure to adjust the <code>--partition</code> parameter to match your environment:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name="StrainCascade" </span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=StrainCascade\_%j.out </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=32 </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem-per-cpu=3G #96GB total </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=your_partition</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute the job</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-i</span> /path/to/your/input_file <span class="at">-t</span> 32</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To submit the script to your SLURM scheduler, use:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> your_SBATCH_script.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="quick-start-from-assembly-files" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="quick-start-from-assembly-files"><span class="header-section-number">2</span> Quick start (from assembly files)</h2>
-<p>To quickly run StrainCascade on an already assembled genome from the command line interface, use the following minimal command:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-a</span> /path/to/your/input_file</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Note:</strong> Running StrainCascade is resource-intensive and will overwhelm standard desktop or laptop computers. For optimal performance, we strongly recommend using a high-performance computing (HPC) environment.</p>
-<p>For efficient execution, it’s recommended to submit pipeline jobs as a SLURM SBATCH job. Below is an example of a basic SLURM submission script. Be sure to adjust the <code>--partition</code> parameter to match your environment:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name="StrainCascade" </span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=StrainCascade\_%j.out </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=32 </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem-per-cpu=3G #96GB total </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --partition=your_partition</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute the job</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-a</span> /path/to/your/input_file <span class="at">-t</span> 32</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To submit the script to your SLURM scheduler, use:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> your_SBATCH_script.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="high-throughput-sbatch-set-up-from-sequencing-files" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="high-throughput-sbatch-set-up-from-sequencing-files"><span class="header-section-number">3</span> High throughput SBATCH set-up (from sequencing files)</h2>
-<p>For processing multiple sequencing files in a high-throughput manner, you can use a provided submission script that automates the creation of individual SLURM jobs for each input file contained in a specified input directory. Here’s an example of how to set this up:</p>
-<p>First, navigate to the StrainCascade installation directory:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$(</span><span class="fu">dirname</span> <span class="va">$(</span><span class="fu">which</span> straincascade<span class="va">))</span>/..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then you can generate batch submissions for multiple files as illustrated exemplarily below:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For minimal usage with required arguments only</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh</span> <span class="at">-i</span> /path/to/input_directory <span class="at">-p</span> my_partition</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># With sequencing type</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh</span> <span class="at">-i</span> /path/to/input_directory <span class="at">-p</span> my_partition <span class="at">-s</span> pacbio-raw</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># With all optional parameters</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh</span> <span class="at">-i</span> /path/to/input_directory <span class="at">-p</span> my_partition <span class="at">-s</span> pacbio-raw <span class="at">-n</span> user@example.com <span class="at">-f</span> file_list.txt</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters can be in any order</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh</span> <span class="at">-s</span> pacbio-hifi <span class="at">-i</span> /path/to/input_directory <span class="at">-n</span> user@example.com <span class="at">-p</span> my_partition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Further explanation:</strong></p>
-<pre class="console"><code>./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh
-Usage: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i &lt;input_directory&gt; -p &lt;partition&gt; [-s &lt;sequencing_type&gt;] [-n &lt;notification&gt;] [-f &lt;file_list&gt;]
-Required arguments:
-  -i &lt;input_directory&gt;: Directory containing input files
-  -p &lt;partition&gt;: SLURM partition to use for the job
-Optional arguments:
-  -s &lt;sequencing_type&gt;: Sequencing type (default: pacbio-hifi)
-                        Valid options: pacbio-raw, pacbio-corr, pacbio-hifi, nano-raw, nano-corr, nano-hq
-  -n &lt;notification&gt;: Email address for notifications
-  -f &lt;file_list&gt;: File with specific filenames to process (one filename per line)
-  -----------------------------------------------------------------
-  Example usage 1: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-raw
-  Example usage 2: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-hifi -n your.email@example.com -f file_list.txt</code></pre>
+<p>GeneCascade is a modular pipeline for sequence analysis, primarily executed via the command line.</p>
+<section id="main-commands" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="main-commands"><span class="header-section-number">1</span> Main Commands</h2>
+<p>The <code>genecascade</code> script is the main entry point and accepts the following primary commands:</p>
 <ul>
-<li><p>By default the script will generate a submission script for each file in the input directory with one of the following endings: <code>.bam</code>, <code>fastq</code>, <code>fastq.gz</code>, <code>.fasta</code>, <code>fna</code> or <code>.fa</code>. The files will be submitted to the SLURM scheduler. Optionally, you can provide a text file (<code>file_list</code>) limiting execution to specific files in the input directory.</p></li>
-<li><p>By default the script will execute a standard run of StainCascade for each of the samples as SBATCH job: <code>straincascade -a "$input_file" -r main -t 32</code> (using 96GB of RAM). If you are experienced with StrainCascade and using SBATCH and want to customize the execution, you can modify the script to your needs.</p></li>
-<li><p>The script will submit the individual SLURM jobs with job configurations as shown below. Make sure that these are appropriate for your system (e.g., number of CPUs, memory allocation, time limits etc.).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#--job-name=straincascade_${base_name}</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--output=${REPORT_DIR}/StrainCascade_${base_name}_%j.out</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--cpus-per-task=32</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--mem-per-cpu=3G</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#--time=48:00:00</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--partition=$PARTITION</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#--mail-user=$EMAIL</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#--mail-type=end,fail</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><code>run</code>: Executes the full GeneCascade analysis pipeline with specified modules and parameters.</li>
+<li><code>install</code>: Launches the GeneCascade installation utility to install/update the Apptainer image and required databases.</li>
+<li><code>-h</code> or <code>--help</code>: Displays the help message.</li>
+<li><code>-v</code> or <code>--version</code>: Shows the current version of GeneCascade.</li>
 </ul>
 </section>
-<section id="high-throughput-sbatch-set-up-from-assembly-files" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="high-throughput-sbatch-set-up-from-assembly-files"><span class="header-section-number">4</span> High throughput SBATCH set-up (from assembly files)</h2>
-<p>For processing multiple already assembled genomes in a high-throughput manner, you can use a provided submission script that automates the creation of individual SLURM jobs for each input file contained in a specified input directory. Here’s an example of how to set this up:</p>
-<p>First, navigate to the StrainCascade installation directory:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$(</span><span class="fu">dirname</span> <span class="va">$(</span><span class="fu">which</span> straincascade<span class="va">))</span>/..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then you can generate batch submissions for multiple files as illustrated exemplarily below:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For minimal usage with required arguments only</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh</span> <span class="at">-i</span> /path/to/input_directory <span class="at">-p</span> my_partition</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># With sequencing type</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh</span> <span class="at">-i</span> /path/to/input_directory <span class="at">-p</span> my_partition <span class="at">-s</span> pacbio-raw</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># With all optional parameters</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh</span> <span class="at">-i</span> /path/to/input_directory <span class="at">-p</span> my_partition <span class="at">-s</span> pacbio-raw <span class="at">-n</span> user@example.com <span class="at">-f</span> file_list.txt</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters can be in any order</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh</span> <span class="at">-s</span> pacbio-hifi <span class="at">-i</span> /path/to/input_directory <span class="at">-n</span> user@example.com <span class="at">-p</span> my_partition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Further explanation:</strong></p>
-<pre class="console"><code>Usage: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i &lt;input_directory&gt; -p &lt;partition&gt; [-s &lt;sequencing_type&gt;] [-n &lt;notification&gt;] [-f &lt;file_list&gt;] [-c &lt;cpus&gt;] [-m &lt;memory&gt;]
-Required arguments:
-  -i &lt;input_directory&gt;: Directory containing input files
-  -p &lt;partition&gt;: SLURM partition to use for the job
-Optional arguments:
-  -s &lt;sequencing_type&gt;: Sequencing type (default: pacbio-hifi)
-                        Valid options: pacbio-raw, pacbio-corr, pacbio-hifi, nano-raw, nano-corr, nano-hq
-  -n &lt;notification&gt;: Email address for notifications
-  -f &lt;file_list&gt;: File with specific filenames to process (one filename per line)
-  -c &lt;cpus&gt;: Number of CPUs per task (default: 32)
-  -m &lt;memory&gt;: Memory per CPU in GB (default: 3)
-  -----------------------------------------------------------------
-  Example usage 1: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-raw
-  Example usage 2: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-hifi -n your.email@example.com -f file_list.txt -c 10 -m 5</code></pre>
+<section id="genecascade-run" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="genecascade-run"><span class="header-section-number">2</span> <code>genecascade run</code></h2>
+<p>This command executes the main analysis pipeline.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">genecascade</span> run <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="required-arguments-for-run" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="required-arguments-for-run"><span class="header-section-number">2.1</span> Required Arguments for <code>run</code></h3>
 <ul>
-<li><p>By default the script will generate a submission script for each file in the input directory with one of the following endings: <code>.fasta</code>, <code>fna</code> or <code>.fa</code>. The files will be submitted to the SLURM scheduler. Optionally, you can provide a text file (<code>file_list</code>) limiting execution to specific files in the input directory.</p></li>
-<li><p>By default the script will execute a standard run of StainCascade for each of the samples as SBATCH job: <code>straincascade -a "$input_file" -r main -t 32</code> (using 96GB of RAM). If you are experienced with StrainCascade and using SBATCH and want to customize the execution, you can modify the script to your needs.</p></li>
-<li><p>The script will submit the individual SLURM jobs with job configurations as shown below. Make sure that these are appropriate for your system (e.g., number of CPUs, memory allocation, time limits etc.).</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#--job-name=straincascade_${base_name}</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--output=${REPORT_DIR}/StrainCascade_${base_name}_%j.out</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--cpus-per-task=32</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--mem-per-cpu=3G</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#--time=48:00:00</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--partition=$PARTITION</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#--mail-user=$EMAIL</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#--mail-type=end,fail</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><code>-i, --input_sequences &lt;path&gt;</code>
+<ul>
+<li>Path to your input sequence data. This can be a single FASTA file, a directory of FASTA files, or a CSV/TSV/QS/RData file mapping sequence IDs to file paths.</li>
+</ul></li>
+<li><code>-o, --output_dir_base &lt;path&gt;</code>
+<ul>
+<li>Base directory where all output subdirectories and files for this run will be created.</li>
+</ul></li>
 </ul>
 </section>
-<section id="updating-straincascade" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="updating-straincascade"><span class="header-section-number">5</span> Updating StrainCascade</h2>
-<p>To keep your StrainCascade installation current, you can freshly <a href="./installation.html#default-installation-interactive">install new major releases</a> or <a href="./installation.html#updating-your-existing-straincascade-installation">update existing components</a>. For instructions on installing new releases and updating StrainCascade components, please refer to [Updating your existing StrainCascade installation].</p>
-</section>
-<section id="caveats" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="caveats"><span class="header-section-number">6</span> CAVEATS</h2>
+<section id="optional-core-inputoutput-context-parameters-for-run" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="optional-core-inputoutput-context-parameters-for-run"><span class="header-section-number">2.2</span> Optional Core Input/Output &amp; Context Parameters for <code>run</code></h3>
 <ul>
-<li><strong>Conda environment and PATH variable in SBATCH jobs:</strong> When submitting <code>sbatch</code> jobs, it is important to note that your Conda environment will not remain active. If you have multiple installations of StrainCascade, each installation will add its respective paths to the <code>PATH</code> variable. Only by activating the correct Conda environment in your <code>sbatch</code> script (not implement in above examples) will you ensure that the appropriate paths are used, allowing StrainCascade to function as expected. Without this activation, <code>sbatch</code> jobs may inadvertently use incorrect paths, potentially leading to errors or unexpected behaviour.</li>
+<li><code>-m, --metadata_file &lt;path&gt;</code>
+<ul>
+<li>Path to a metadata file (TSV or QS format). If not provided, GeneCascade will attempt to generate basic metadata from sequence IDs during Module 1 (Input Preparation). This may limit some downstream analyses.</li>
+</ul></li>
+<li><code>--genome_id_column &lt;column_name&gt;</code>
+<ul>
+<li>Specifies the column in your metadata file that contains genome or Metagenome-Assembled Genome (MAG) identifiers. Primarily used in Module 6 (Co-occurrence Analysis) for context.</li>
+</ul></li>
+<li><code>--sample_id_column &lt;column_name&gt;</code>
+<ul>
+<li>Specifies the column in your metadata file that contains sample identifiers. Used in Module 5 (Core Feature Analysis) and Module 6 (Co-occurrence Analysis) for context.</li>
+</ul></li>
+<li><code>--condition_column &lt;column_name&gt;</code>
+<ul>
+<li>Specifies the column in your metadata file that contains condition or niche identifiers. Used in Module 5 (Core Feature Analysis) and Module 6 (Co-occurrence Analysis) for context.</li>
+</ul></li>
+<li><code>--fdr_threshold &lt;float&gt;</code>
+<ul>
+<li>Global False Discovery Rate (FDR) threshold for statistical tests.</li>
+<li>Default: <code>0.05</code></li>
+</ul></li>
+<li><code>--apptainer_images_dir &lt;path&gt;</code>
+<ul>
+<li>Path to the directory containing GeneCascade Apptainer images (.sif files).</li>
+<li>Default: <code>GeneCascade_root/apptainer_images</code> (relative to the main GeneCascade script location).</li>
+</ul></li>
+<li><code>--databases_directory &lt;path&gt;</code>
+<ul>
+<li>Path to the directory containing downloaded reference databases.</li>
+<li>Default: <code>GeneCascade_root/databases</code> (relative to the main GeneCascade script location).</li>
+</ul></li>
+<li><code>-f, --force_overwrite</code>
+<ul>
+<li>If set, forces the overwrite of existing output subdirectories for modules that are actively being run. Use with caution.</li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-performance-parameters-for-run" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="optional-performance-parameters-for-run"><span class="header-section-number">2.3</span> Optional Performance Parameters for <code>run</code></h3>
+<ul>
+<li><code>-t, --threads &lt;integer&gt;</code>
+<ul>
+<li>Number of threads to use for computationally intensive tasks.</li>
+<li>Default: <code>16</code></li>
+</ul></li>
+<li><code>--memory &lt;value&gt;</code>
+<ul>
+<li>Memory limit for MMseqs2 (e.g., “10G”, “0” for unlimited).</li>
+<li>Default: <code>"0"</code> (unlimited)</li>
+</ul></li>
+<li><code>--future_globals_max_size_gb &lt;integer&gt;</code>
+<ul>
+<li>Maximum size (in GB) for R ‘future’ globals, affecting parallel processing in R scripts.</li>
+<li>Default: <code>5</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-skip-flags-for-run" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="optional-skip-flags-for-run"><span class="header-section-number">2.4</span> Optional Skip Flags for <code>run</code></h3>
+<p>You can skip specific modules of the pipeline:</p>
+<ul>
+<li><code>--skip_GC_01_preparation</code>: Skip Module 1 (Input Preparation).</li>
+<li><code>--skip_GC_02_annotation</code>: Skip Module 2 (Sequence Annotation).</li>
+<li><code>--skip_GC_03_clustering</code>: Skip Module 3 (Homology Clustering).</li>
+<li><code>--skip_GC_04_master_table</code>: Skip Module 4 (Master Table Generation).</li>
+<li><code>--skip_GC_05_core_features</code>: Skip Module 5 (Core Feature Analysis).</li>
+<li><code>--skip_GC_06_cooccurrence</code>: Skip Module 6 (Co-occurrence Analysis).</li>
+<li><code>--skip_GC_07_association</code>: Skip Module 7 (Association Studies).</li>
+</ul>
+</section>
+<section id="optional-general-abundance-parameters-for-run" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="optional-general-abundance-parameters-for-run"><span class="header-section-number">2.5</span> Optional General Abundance Parameters for <code>run</code></h3>
+<p>These parameters define how feature abundance is interpreted, particularly for Modules 6 and 7.</p>
+<ul>
+<li><code>--abundance_type &lt;type&gt;</code>
+<ul>
+<li>Type of feature abundance:
+<ul>
+<li><code>binary</code>: Presence/absence.</li>
+<li><code>relative_abundance</code>: Normalized abundance values.</li>
+<li><code>absolute_abundance</code>: Raw count or absolute abundance values.</li>
+</ul></li>
+<li>Default: <code>"binary"</code></li>
+</ul></li>
+<li><code>--abundance_column &lt;column_name&gt;</code>
+<ul>
+<li>If <code>--abundance_type</code> is <code>relative_abundance</code> or <code>absolute_abundance</code>, this specifies the column in your metadata file that contains the abundance values. Ignored if <code>binary</code>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-1-sequence-preparation-for-run" class="level3" data-number="2.6">
+<h3 data-number="2.6" class="anchored" data-anchor-id="optional-parameters-for-gc-1-sequence-preparation-for-run"><span class="header-section-number">2.6</span> Optional Parameters for GC 1 (Sequence Preparation) for <code>run</code></h3>
+<ul>
+<li><code>--sequence_type &lt;type&gt;</code>
+<ul>
+<li>Initial guess for the input sequence type: <code>protein</code> or <code>nucleotide</code>.</li>
+<li>Default: Auto-detected by Module 1.</li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-2-annotation-for-run" class="level3" data-number="2.7">
+<h3 data-number="2.7" class="anchored" data-anchor-id="optional-parameters-for-gc-2-annotation-for-run"><span class="header-section-number">2.7</span> Optional Parameters for GC 2 (Annotation) for <code>run</code></h3>
+<ul>
+<li><code>--annotation_db_priority &lt;databases&gt;</code>
+<ul>
+<li>Comma-separated list defining the priority of annotation databases (e.g., “Swiss-Prot,TrEMBL”).</li>
+<li>Default: <code>"Swiss-Prot_TrEMBL"</code> (Note: the script uses <code>_</code> as a separator in the default, but the help suggests <code>,</code> for user input. This might need clarification in the script’s help or parsing.)</li>
+</ul></li>
+<li><code>-s, --sensitivity &lt;float&gt;</code>
+<ul>
+<li>Sensitivity parameter for MMseqs2, used in Module 2 (Annotation) and Module 3 (Clustering).</li>
+<li>Default: <code>5.7</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-3-clustering-for-run" class="level3" data-number="2.8">
+<h3 data-number="2.8" class="anchored" data-anchor-id="optional-parameters-for-gc-3-clustering-for-run"><span class="header-section-number">2.8</span> Optional Parameters for GC 3 (Clustering) for <code>run</code></h3>
+<ul>
+<li><code>--min_sequence_identity &lt;float&gt;</code>
+<ul>
+<li>Minimum sequence identity for clustering (passed to MMseqs2 <code>--min-seq-id</code>).</li>
+<li>Default: <code>0.5</code></li>
+</ul></li>
+<li><code>--min_coverage &lt;float&gt;</code>
+<ul>
+<li>Minimum coverage for clustering (passed to MMseqs2 <code>-c</code> or <code>--min-cov</code>).</li>
+<li>Default: <code>0.8</code></li>
+</ul></li>
+<li><code>--coverage_mode &lt;integer&gt;</code>
+<ul>
+<li>Coverage mode for clustering (passed to MMseqs2 <code>--cov-mode</code>).</li>
+<li>Default: <code>0</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-4-master-table-generation-for-run" class="level3" data-number="2.9">
+<h3 data-number="2.9" class="anchored" data-anchor-id="optional-parameters-for-gc-4-master-table-generation-for-run"><span class="header-section-number">2.9</span> Optional Parameters for GC 4 (Master Table Generation) for <code>run</code></h3>
+<ul>
+<li><code>--master_table_basename &lt;name&gt;</code>
+<ul>
+<li>Basename for the main output data table file (e.g., <code>master_data_table.qs</code>).</li>
+<li>Default: <code>"master_data_table"</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-5-core-feature-analysis-for-run" class="level3" data-number="2.10">
+<h3 data-number="2.10" class="anchored" data-anchor-id="optional-parameters-for-gc-5-core-feature-analysis-for-run"><span class="header-section-number">2.10</span> Optional Parameters for GC 5 (Core Feature Analysis) for <code>run</code></h3>
+<ul>
+<li><code>--core_feature_prevalence_threshold &lt;float&gt;</code>
+<ul>
+<li>Prevalence threshold (0.0-1.0) for defining core features within a condition/niche.</li>
+<li>Default: <code>0.9</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-6-co-occurrence-analysis-for-run" class="level3" data-number="2.11">
+<h3 data-number="2.11" class="anchored" data-anchor-id="optional-parameters-for-gc-6-co-occurrence-analysis-for-run"><span class="header-section-number">2.11</span> Optional Parameters for GC 6 (Co-occurrence Analysis) for <code>run</code></h3>
+<p><em>(Context for GC 6 is set by <code>--genome_id_column</code>, <code>--sample_id_column</code>, <code>--condition_column</code> listed under Core Parameters)</em></p>
+<p><strong>Homologue Group (HG) Filters &amp; Pairwise Tests:</strong></p>
+<ul>
+<li><code>--cooc_correlation_method &lt;method&gt;</code>
+<ul>
+<li>Correlation method for abundance data: <code>spearman</code> or <code>pearson</code>.</li>
+<li>Default: <code>"spearman"</code></li>
+</ul></li>
+<li><code>--min_hg_occurrence_absolute &lt;integer&gt;</code>
+<ul>
+<li>Minimum absolute number of genomes/samples an HG must be present in.</li>
+<li>Default: <code>10</code></li>
+</ul></li>
+<li><code>--min_hg_occurrence_fraction &lt;float&gt;</code>
+<ul>
+<li>Minimum fraction (0.0-1.0) of genomes/samples an HG must be present in.</li>
+<li>Default: <code>0.01</code></li>
+</ul></li>
+<li><code>--max_hg_prevalence_percentage &lt;float&gt;</code>
+<ul>
+<li>Maximum prevalence percentage (0-100) for an HG to be included.</li>
+<li>Default: <code>99.0</code></li>
+</ul></li>
+<li><code>--min_pair_cooccurrence_absolute &lt;integer&gt;</code>
+<ul>
+<li>Minimum absolute number of genomes/samples a pair of HGs must co-occur in.</li>
+<li>Default: <code>5</code></li>
+</ul></li>
+<li><code>--min_pair_cooccurrence_fraction &lt;float&gt;</code>
+<ul>
+<li>Minimum fraction (0.0-1.0) of genomes/samples a pair of HGs must co-occur in.</li>
+<li>Default: <code>0.005</code></li>
+</ul></li>
+<li><code>--min_hg_iqr_abundance &lt;float&gt;</code>
+<ul>
+<li>Minimum Interquartile Range (IQR) for HG abundance values (for non-binary abundance types).</li>
+<li>Default: <code>0.0</code></li>
+</ul></li>
+<li><code>--min_correlation_metric &lt;float&gt;</code>
+<ul>
+<li>Minimum absolute pairwise correlation metric to consider a link.</li>
+<li>Default: <code>0.0</code></li>
+</ul></li>
+<li><code>--pairwise_test_chunk_size &lt;integer&gt;</code>
+<ul>
+<li>Chunk size for processing pairs in R helper scripts, managing memory.</li>
+<li>Default: <code>1000000</code></li>
+</ul></li>
+</ul>
+<p><strong>Module Definition:</strong></p>
+<ul>
+<li><code>--min_positive_module_correlation &lt;float&gt;</code>
+<ul>
+<li>Minimum positive correlation value for defining links within a co-occurrence module.</li>
+<li>Default: <code>0.3</code></li>
+</ul></li>
+<li><code>--min_module_size &lt;integer&gt;</code>
+<ul>
+<li>Minimum number of HGs required to form a module.</li>
+<li>Default: <code>3</code></li>
+</ul></li>
+<li><code>--community_detection_method &lt;method&gt;</code>
+<ul>
+<li>Algorithm for community detection (e.g., <code>cluster_louvain</code> from igraph).</li>
+<li>Default: <code>"cluster_louvain"</code></li>
+</ul></li>
+<li><code>--core_module_strong_link_threshold &lt;float&gt;</code>
+<ul>
+<li>Correlation metric threshold for defining “strong links” within core modules.</li>
+<li>Default: <code>0.7</code></li>
+</ul></li>
+</ul>
+<p><strong>Competitive Module/Pathway Analysis:</strong></p>
+<ul>
+<li><code>--inter_module_neg_metric_threshold &lt;float&gt;</code> (was <code>--inter_pathway_neg_metric_threshold</code>)
+<ul>
+<li>Negative correlation metric threshold for identifying potential competition between modules.</li>
+<li>Default: <code>-0.2</code></li>
+</ul></li>
+<li><code>--inter_module_min_neg_links &lt;integer&gt;</code> (was <code>--inter_pathway_min_neg_links</code>)
+<ul>
+<li>Minimum number of negative links between two modules to consider them potentially competitive.</li>
+<li>Default: <code>1</code></li>
+</ul></li>
+<li><code>--vs_core_neg_metric_threshold &lt;float&gt;</code>
+<ul>
+<li>Negative correlation metric threshold for competition between a module and core HGs.</li>
+<li>Default: <code>-0.3</code></li>
+</ul></li>
+<li><code>--vs_core_min_frac_members &lt;float&gt;</code>
+<ul>
+<li>Minimum fraction of a module’s members that must show negative correlation with core HGs.</li>
+<li>Default: <code>0.25</code></li>
+</ul></li>
+<li><code>--vs_core_min_distinct_core_hgs &lt;integer&gt;</code>
+<ul>
+<li>Minimum number of distinct core HGs a module must show competition with.</li>
+<li>Default: <code>1</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="optional-parameters-for-gc-7-association-studies---maaslin3-for-run" class="level3" data-number="2.12">
+<h3 data-number="2.12" class="anchored" data-anchor-id="optional-parameters-for-gc-7-association-studies---maaslin3-for-run"><span class="header-section-number">2.12</span> Optional Parameters for GC 7 (Association Studies - MaAsLin3) for <code>run</code></h3>
+<ul>
+<li><code>--maaslin_fixed_effects &lt;effects&gt;</code>
+<ul>
+<li>Comma-separated list of metadata column names to be used as fixed effects in MaAsLin3. <strong>Required if Module 7 is active.</strong></li>
+</ul></li>
+<li><code>--maaslin_random_effects &lt;effects&gt;</code>
+<ul>
+<li>Comma-separated list of metadata column names for random effects.</li>
+</ul></li>
+<li><code>--maaslin_reference_levels &lt;levels&gt;</code>
+<ul>
+<li>Semicolon-separated string defining reference levels for categorical variables in MaAsLin3 (e.g., “variable1,ref_level1;variable2,ref_level2”).</li>
+</ul></li>
+<li><code>--maaslin_observation_unit_column &lt;column_name&gt;</code>
+<ul>
+<li>Metadata column name representing the primary observation unit (e.g., sample IDs). <strong>Required if Module 7 is active.</strong></li>
+</ul></li>
+<li><code>--maaslin_genome_id_column &lt;column_name&gt;</code>
+<ul>
+<li>Optional metadata column for genome IDs, can be used e.g., as a random effect if relevant.</li>
+</ul></li>
+<li><code>--maaslin_analysis_target &lt;target&gt;</code>
+<ul>
+<li>Feature type for MaAsLin3 analysis: <code>homologues</code>, <code>pathways</code>, or <code>both</code>.</li>
+<li>Default: <code>"homologues"</code></li>
+</ul></li>
+<li><code>--maaslin_normalization &lt;method&gt;</code>
+<ul>
+<li>Normalization method for MaAsLin3.</li>
+<li>Default: <code>"TSS"</code> (Total Sum Scaling) for quantitative data, <code>"NONE"</code> for binary.</li>
+</ul></li>
+<li><code>--maaslin_transform &lt;method&gt;</code>
+<ul>
+<li>Data transformation for MaAsLin3.</li>
+<li>Default: <code>"LOG"</code> for quantitative data, <code>"NONE"</code> for binary.</li>
+</ul></li>
+<li><code>--maaslin_standardize &lt;TRUE_FALSE&gt;</code>
+<ul>
+<li>Whether to standardize continuous metadata variables (<code>TRUE</code> or <code>FALSE</code>).</li>
+<li>Default: <code>"TRUE"</code></li>
+</ul></li>
+<li><code>--maaslin_min_feature_prevalence_fraction &lt;float&gt;</code>
+<ul>
+<li>Minimum fraction of samples in which a feature must be present to be included in MaAsLin3 analysis.</li>
+<li>Default: <code>0.05</code></li>
+</ul></li>
+<li><code>--maaslin_min_feature_abundance_sum &lt;float&gt;</code>
+<ul>
+<li>Minimum total abundance sum for a feature across all samples (for non-binary data).</li>
+<li>Default: <code>0</code> (for quantitative data, effectively no sum filter unless changed)</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="genecascade-install" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="genecascade-install"><span class="header-section-number">3</span> <code>genecascade install</code></h2>
+<p>This command launches the interactive installation utility.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">genecascade</span> install</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will present a menu to: - Perform a full installation (Apptainer image + All Databases + Add to PATH). - Install/Update the Apptainer image only. - Install/Update all databases only. - Add GeneCascade scripts to your system PATH. - Check system requirements (Apptainer, Disk Space).</p>
+<p>Refer to the <a href="./installation.html">Installation</a> page for more details.</p>
+</section>
+<section id="help-and-version" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="help-and-version"><span class="header-section-number">4</span> Help and Version</h2>
+<ul>
+<li><code>genecascade -h</code> or <code>genecascade --help</code>
+<ul>
+<li>Displays the detailed help message listing all commands and options.</li>
+</ul></li>
+<li><code>genecascade -v</code> or <code>genecascade --version</code>
+<ul>
+<li>Shows the installed GeneCascade version.</li>
+</ul></li>
 </ul>
 
 

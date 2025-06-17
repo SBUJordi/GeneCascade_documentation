@@ -154,9 +154,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#system-requirements" id="toc-system-requirements" class="nav-link active" data-scroll-target="#system-requirements"><span class="header-section-number">1</span> System requirements</a></li>
   <li><a href="#installation-dependencies" id="toc-installation-dependencies" class="nav-link" data-scroll-target="#installation-dependencies"><span class="header-section-number">2</span> Installation dependencies</a></li>
   <li><a href="#default-installation-interactive" id="toc-default-installation-interactive" class="nav-link" data-scroll-target="#default-installation-interactive"><span class="header-section-number">3</span> Default installation (interactive)</a></li>
-  <li><a href="#custom-installation" id="toc-custom-installation" class="nav-link" data-scroll-target="#custom-installation"><span class="header-section-number">4</span> Custom installation</a></li>
-  <li><a href="#updating-your-existing-straincascade-installation" id="toc-updating-your-existing-straincascade-installation" class="nav-link" data-scroll-target="#updating-your-existing-straincascade-installation"><span class="header-section-number">5</span> Updating your existing StrainCascade installation</a></li>
-  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats"><span class="header-section-number">6</span> CAVEATS</a></li>
+  <li><a href="#updating-your-existing-genecascade-installation" id="toc-updating-your-existing-genecascade-installation" class="nav-link" data-scroll-target="#updating-your-existing-genecascade-installation"><span class="header-section-number">4</span> Updating your existing GeneCascade installation</a></li>
+  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats"><span class="header-section-number">5</span> CAVEATS</a></li>
   </ul>
 </nav>
     </div>
@@ -185,90 +184,85 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="system-requirements" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="system-requirements"><span class="header-section-number">1</span> System requirements</h2>
 <ul>
-<li><p>Linux OS (e.g., CentOS, Ubuntu, Debian, etc.)</p></li>
-<li><p>~ 590GB disk space software and reference databases</p></li>
-<li><p>For optimal performance, we recommend running StrainCascade with 32 CPU cores, with 3GB of RAM allocated per core (= total of 96GB of RAM). If you run SC15 for de novo tree generation more than 100GB of RAM might be required.</p></li>
+<li>Linux OS (e.g., CentOS, Ubuntu, Debian, etc.)</li>
+<li>Disk space: Approximately <strong>~475GB</strong> is required for GeneCascade, which includes the Apptainer image and all reference databases (UniProtKB/Swiss-Prot, UniProtKB/TrEMBL, GTDB). Please ensure adequate space before starting. The Apptainer image itself requires about 2GB.</li>
+<li>For optimal performance, a system with <strong>32 CPU cores</strong> and <strong>5GB of RAM per core (total 160GB RAM)</strong> is recommended. The number of CPU cores can be freely adjusted but we recommend strongly to always assign <strong>5GB or more</strong> of RAM per core.</li>
 </ul>
 </section>
 <section id="installation-dependencies" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="installation-dependencies"><span class="header-section-number">2</span> Installation dependencies</h2>
 <ul>
-<li><p><a href="https://git-scm.com/">Git</a></p></li>
-<li><p><a href="https://apptainer.org/">Apptainer</a></p></li>
-<li><p>(<a href="https://tiswww.case.edu/php/chet/bash/bashtop.html">Bash</a> as command-line shell)</p></li>
-<li><p>(Optional: <a href="https://docs.anaconda.com/miniconda/">Conda/Miniconda</a>)</p></li>
-<li><p>All further software dependencies (listed in detail under <a href="./dependencies.html">Dependencies</a>) are bundled in Apptainer images, which are automatically downloaded and used when installing/running StrainCascade. This approach enhances:</p>
+<li><a href="https://git-scm.com/">Git</a></li>
+<li><a href="https://apptainer.org/">Apptainer</a> (formerly Singularity): The installation script will check if Apptainer is installed and in your PATH. If not, you will be prompted to install it (see <a href="https://apptainer.org/docs/user/main/quick_start.html#installation">Apptainer Installation Guide</a>).</li>
+<li>(<a href="https://tiswww.case.edu/php/chet/bash/bashtop.html">Bash</a> as command-line shell)</li>
+<li>(Optional: <a href="https://docs.anaconda.com/miniconda/">Conda/Miniconda</a> for environment management)</li>
+<li>All further software dependencies (like MMseqs2) are bundled within the GeneCascade Apptainer image (<code>sbujordi/genecascade_mmseqs2_r:latest</code> from Docker Hub, saved as <code>genecascade_mmseqs2_r_latest.sif</code>), which is automatically downloaded during installation. This approach enhances:
 <ol type="1">
-<li><p>Ease of use: Simplified installation and execution process</p></li>
-<li><p>Portability: Consistent performance across different computing environments</p></li>
-<li><p>Reproducibility: Ensures identical software environments for all users</p></li>
-<li><p>Version control: Precise management of software versions and their interactions</p></li>
-<li><p>Isolation: Minimises conflicts with existing system libraries</p></li>
+<li>Ease of use: Simplified installation and execution.</li>
+<li>Portability: Consistent performance across different computing environments.</li>
+<li>Reproducibility: Ensures identical software environments.</li>
+<li>Version control: Precise management of software versions.</li>
+<li>Isolation: Minimizes conflicts with existing system libraries.</li>
 </ol></li>
 </ul>
 </section>
 <section id="default-installation-interactive" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="default-installation-interactive"><span class="header-section-number">3</span> Default installation (interactive)</h2>
-<p>For standard installation with the command-line interface, follow these steps:</p>
-<p>Optional - Create and activate a conda environment for StrainCascade:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> StrainCascade_env</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate StrainCascade_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Optional - Navigate to your StrainCascade conda environment directory:</p>
+<p>For a standard installation using the interactive command-line utility, follow these steps:</p>
+<p>Optional - Create and activate a conda environment for GeneCascade:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> GeneCascade_env</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate GeneCascade_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Optional - Navigate to your GeneCascade conda environment directory (if you want to clone the repository there):</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$CONDA_PREFIX</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Clone the StrainCascade GitHub repository to your current working directory</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/SBUJordi/StrainCascade.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Navigate to the new StrainCascade directory</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> StrainCascade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Make all scripts (including the ones in subdirectories) of StrainCascade executable</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> scripts/ <span class="at">-type</span> f <span class="at">-exec</span> chmod +x {} <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Execute the installation script, which pulls Apptainer images and downloads databases. At this point you have three insttallation options:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For interactive installation with normal verbosity (recommended default)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/StrainCascade_installation.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For quiet full installation</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">STRAINCASCADE_VERBOSITY</span><span class="op">=</span>0 <span class="ex">./scripts/StrainCascade_installation.sh</span> <span class="at">--full</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For verbose interactive installation</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">STRAINCASCADE_VERBOSITY</span><span class="op">=</span>2 <span class="ex">./scripts/StrainCascade_installation.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If you choose the default interactive installation, you will be prompted by an interactive installation guide if you have enough disk space.</p>
-<pre><code>Running StrainCascade installation...
-Sufficient disk space available: XXXGB
-Apptainer is installed.
-Do you want to do a full installation of StrainCascade? (y/n)</code></pre>
-<p>For a complete installation from scratch, choose <code>y</code> when asked.</p>
-<p>The installation may take between 12 hours to over a day, depending on your system and network speed.</p>
+<p>Clone the GeneCascade GitHub repository to your current working directory:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace with the actual GeneCascade repository URL if different</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/SBUJordi/GeneCascade.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Navigate to the new GeneCascade directory:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> GeneCascade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Make the main installation script executable:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x genecascade_installation.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Execute the installation script. This will launch an interactive menu to guide you through the installation options:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./genecascade_installation.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You will be presented with a menu similar to this:</p>
+<pre class="console"><code>YYYY-MM-DD HH:MM:SS - INSTALL: GeneCascade Installation Utility
+YYYY-MM-DD HH:MM:SS - INSTALL: --------------------------------
+YYYY-MM-DD HH:MM:SS - INSTALL: This script will guide you through setting up GeneCascade.
+YYYY-MM-DD HH:MM:SS - INSTALL: Default Apptainer Image Directory: /path/to/GeneCascade/apptainer_images
+YYYY-MM-DD HH:MM:SS - INSTALL: Default Database Directory:        /path/to/GeneCascade/databases
+YYYY-MM-DD HH:MM:SS - INSTALL: Ensure you have sufficient disk space (~475GB for all databases) and a stable internet connection.
+
+Select an installation option: 
+1) Full Installation (Apptainer Image + All Databases + Add to PATH)
+2) Install/Update Apptainer Image Only
+3) Install/Update All Databases Only
+4) Add GeneCascade Scripts to PATH
+5) Check System Requirements (Apptainer, Disk Space)
+6) Quit Installation</code></pre>
+<p>The default Apptainer image directory will be <code>GeneCascade/apptainer_images</code> and the default database directory will be <code>GeneCascade/databases</code> relative to where you cloned the repository.</p>
+<p>For a complete installation from scratch, choose option <code>1</code> (“Full Installation”). The installation duration will depend on your system and network speed.</p>
 </section>
-<section id="custom-installation" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="custom-installation"><span class="header-section-number">4</span> Custom installation</h2>
-<p>In the event of an error, disruption, or if you prefer to install only specific Apptainer images or databases, you can choose <code>n</code> when prompted for a full installation. This will allow you to sequentially decide for each individual Apptainer image or database whether you want to download and install it.</p>
-<p>This option is particularly useful in scenarios where:</p>
+<section id="updating-your-existing-genecascade-installation" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="updating-your-existing-genecascade-installation"><span class="header-section-number">4</span> Updating your existing GeneCascade installation</h2>
+<p>GeneCascade’s installation script facilitates updates:</p>
 <ul>
-<li><p>You have limited disk space or bandwidth and need to prioritize specific components.</p></li>
-<li><p>You encountered an error during a previous installation attempt and need to retry specific parts of the installation.</p></li>
-<li><p>You are troubleshooting and want to isolate certain components for testing.</p></li>
+<li><p><strong>Software Scripts (GeneCascade code)</strong>: To update the GeneCascade scripts themselves, navigate to your <code>GeneCascade</code> directory and use <code>git pull</code> to get the latest changes from the repository. <code>bash     cd path/to/GeneCascade # Your GeneCascade installation directory     git pull</code> After pulling changes, you might need to re-run <code>./genecascade_installation.sh</code> if the update involves changes to dependencies, PATH setup, or if new database/image versions are recommended.</p></li>
+<li><p><strong>Apptainer Image</strong>: Use option <code>2</code> (“Install/Update Apptainer Image Only”) from the <code>./genecascade_installation.sh</code> menu. This will pull the <code>sbujordi/genecascade_mmseqs2_r:latest</code> image.</p></li>
+<li><p><strong>Databases</strong>: Use option <code>3</code> (“Install/Update All Databases Only”) from the <code>./genecascade_installation.sh</code> menu. This will attempt to download/update UniProtKB/Swiss-Prot, UniProtKB/TrEMBL, and GTDB.</p></li>
 </ul>
-<p>When opting for a selective installation, the script will guide you through each component, providing a brief description and asking whether you wish to install it. This process ensures that only the necessary components are downloaded, giving you full control over the installation.</p>
-<p>Example Prompt:</p>
-<pre class="console"><code>Do you want to install checkm2_db? (y/n)</code></pre>
-<p>By answering <code>y</code> or <code>n</code> to each prompt, you can customise the installation to your specific needs.</p>
+<p><strong>Important Note:</strong> For major version releases of GeneCascade that introduce significant changes, a full re-evaluation of the installation process or following specific release notes might be necessary.</p>
 </section>
-<section id="updating-your-existing-straincascade-installation" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="updating-your-existing-straincascade-installation"><span class="header-section-number">5</span> Updating your existing StrainCascade installation</h2>
-<p>StrainCascade provides separate update mechanisms for its three main components: software scripts, Apptainer images, and databases. You can update each component independently using specific command-line flags with the straincascade command.</p>
-<p>To update the software scripts, use:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-us</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To update the Apptainer images, use:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-uai</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To update the databases, use:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">straincascade</span> <span class="at">-udb</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These update options are particularly useful when you want to incorporate improvements, bug fixes, or new releases specific to each component without performing a complete reinstallation. For example, you might want to update just the databases when new reference data becomes available, or update the software scripts to access the latest features while keeping your existing images and databases.</p>
-<p><strong>Important Note:</strong> These individual update mechanisms are designed for minor version updates and patches. They do not replace the need for a complete reinstallation when major version releases introduce significant new features that affect multiple components of StrainCascade. In such cases, please refer to the full installation instructions for your specific version.</p>
-</section>
-<section id="caveats" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="caveats"><span class="header-section-number">6</span> CAVEATS</h2>
+<section id="caveats" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="caveats"><span class="header-section-number">5</span> CAVEATS</h2>
 <ul>
-<li><p><strong>PATH configuration for multiple installations:</strong> The installation process updates your <code>PATH</code> variable by modifying shell configuration files and/or the conda environment. StrainCascade generally supports multiple installations across different conda environments. If you experience issues, verify that your <code>$PATH</code> points to the correct StrainCascade installation.</p></li>
-<li><p><strong>Installation of third-party databases:</strong> StrainCascade downloads and installs several third-party databases during the installation process. These databases are essential for StrainCascade to function correctly. During development and testing installations of larger databases (e.g.&nbsp;GTDB-Tk or <a href="https://github.com/oschwengers/bakta/issues/268">ARMFinderPlus for Bakta</a>) have caused issues at times. Most often these problems were due to network connectivity, server or local SLURM issues and would relove on its own. We recommend to try the installation again after a few hours or days.</p></li>
-<li><p><strong>Managing Apptainer images after updates:</strong> When re-installing Apptainer images after a StrainCascade update, newer versions (indicated by a higher :v#) of a former image may be downloaded. Although older versions are typically removed (e.g., when using <code>straincascade -uai</code>), there may be cases where previous Apptainer images remain. In such cases, StrainCascade will prioritize the first matching image, which may not always be the latest version. While this usually doesn’t cause errors, we recommend to check the <code>apptainer_images</code> directory and remove outdated versions after re-installations. You can find the <code>apptainer_images</code> directory in the StrainCascade installation directory. You can easily navigate to the <code>apptainer_images</code> directory with the following command (activate the conda environment first if necessary):</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$(</span><span class="fu">dirname</span> <span class="va">$(</span><span class="fu">which</span> straincascade<span class="va">))</span>/../apptainer_images</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>PATH configuration:</strong> The installation script (Option 4 or as part of Full Installation) attempts to modify your shell configuration files (e.g., <code>.bashrc</code>, <code>.zshrc</code>, <code>.bash_profile</code>, <code>.profile</code>) to add the <code>GeneCascade/scripts</code> directory to your <code>PATH</code>. If it cannot find a common profile or if the directory is already in the PATH, it will inform you. It also adds the path to the current session. Ensure you open a new terminal session or source your shell profile after installation/update for PATH changes to take permanent effect.</p></li>
+<li><p><strong>Installation of third-party databases:</strong> GeneCascade downloads and installs UniProtKB/Swiss-Prot, UniProtKB/TrEMBL, and GTDB using <code>mmseqs databases</code> via the Apptainer image.</p>
+<ul>
+<li>The script checks for sufficient disk space in the target database directory (<code>GeneCascade/databases</code>) before starting downloads.</li>
+<li>If a database appears to exist, you’ll be prompted whether to re-download/update.</li>
+<li>Issues during download (network, server-side, local constraints) can occur. If a database download fails, the script will log an error but continue to attempt other database installations. You can retry failed database installations using Option 3 from the menu.</li>
+<li>Temporary download directories (<code>GeneCascade/databases/tmp_mmseqs_download_*</code>) are created and should be cleaned up automatically.</li>
+</ul></li>
+<li><p><strong>Managing Apptainer images after updates:</strong> When updating the Apptainer image (Option 2), if an image file (<code>genecascade_mmseqs2_r_latest.sif</code> in <code>GeneCascade/apptainer_images</code>) already exists, you will be prompted to overwrite. The script primarily manages one standard image name. If you manually pull images with different names or versions, you might need to manage them manually to save disk space. GeneCascade’s database installation utilities will try to find the SIF image first by the standard name (<code>genecascade_mmseqs2_r_latest.sif</code>) and then by a pattern (<code>genecascade_mmseqs2_r*.sif</code>) within the <code>GeneCascade/apptainer_images</code> directory.</p></li>
 </ul>
 
 
