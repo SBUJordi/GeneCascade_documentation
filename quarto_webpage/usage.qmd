@@ -2,228 +2,248 @@
 title: "Usage"
 ---
 
-``` console
-Usage: straincascade [OPTIONS]
+GeneCascade is a modular pipeline for sequence analysis, primarily executed via the command line.
 
-straincascade options:
-  -i FILE/DIR       Input reads file or directory (mutually exclusive with -a, default: empty)
-  -a FILE/DIR       Input assembly file or directory (mutually exclusive with -i, default: empty)
-  -o DIR            Output directory (default: current directory)
-  -s TYPE           Sequencing type (default: pacbio-hifi)
-                    Options: pacbio-raw | pacbio-corr | pacbio-hifi | nano-raw | nano-corr | nano-hq
-  -t INT            Number of threads (default: 32)
-  -e MODE           Execution mode (mutually exclusive with -b, default: standard)
-                    Options: minimal | efficient | standard | comprehensive | custom:modules
-  -b BUNDLE         Bundle name (mutually exclusive with -e, default: empty)
-                    Options: assembly | annotation | functional | phage
-  -r TYPE           Result type (default: main)
-                    Options: all | main | R
-  -f yes/no         Force overwrite of existing files (default: yes)
-  -l STRING         Locus tag (default: automatic)
-  --deterministic | --heuristic Choose deterministic to optimise for reproducibility"
-                                at cost of computation time (default: heuristic)"
+## Main Commands
 
-Update options:
-  -us, --update-software    Update StrainCascade software to the latest version
-  -uai, --update-images     Update all Apptainer images
-  -udb, --update-databases  Update all databases
+The `genecascade` script is the main entry point and accepts the following primary commands:
 
-General options:
-  -h, --help                Show a more detailed help message
-  -v, --version             Show version information
+-   `run`: Executes the full GeneCascade analysis pipeline with specified modules and parameters.
+-   `install`: Launches the GeneCascade installation utility to install/update the Apptainer image and required databases.
+-   `-h` or `--help`: Displays the help message.
+-   `-v` or `--version`: Shows the current version of GeneCascade.
+
+## `genecascade run`
+
+This command executes the main analysis pipeline.
+
+```bash
+genecascade run [OPTIONS]
 ```
 
-## Quick start (from sequencing files)
+### Required Arguments for `run`
 
-To quickly run StrainCascade on a sequencing file from the command line interface, use the following minimal command:
+-   `-i, --input_sequences <path>`
+    -   Path to your input sequence data. This can be a single FASTA file, a directory of FASTA files, or a CSV/TSV/QS/RData file mapping sequence IDs to file paths.
+-   `-o, --output_dir_base <path>`
+    -   Base directory where all output subdirectories and files for this run will be created.
 
-``` bash
-straincascade -i /path/to/your/input_file
+### Optional Core Input/Output & Context Parameters for `run`
+
+-   `-m, --metadata_file <path>`
+    -   Path to a metadata file (TSV or QS format). If not provided, GeneCascade will attempt to generate basic metadata from sequence IDs during Module 1 (Input Preparation). This may limit some downstream analyses.
+-   `--genome_id_column <column_name>`
+    -   Specifies the column in your metadata file that contains genome or Metagenome-Assembled Genome (MAG) identifiers. Primarily used in Module 6 (Co-occurrence Analysis) for context.
+-   `--sample_id_column <column_name>`
+    -   Specifies the column in your metadata file that contains sample identifiers. Used in Module 5 (Core Feature Analysis) and Module 6 (Co-occurrence Analysis) for context.
+-   `--condition_column <column_name>`
+    -   Specifies the column in your metadata file that contains condition or niche identifiers. Used in Module 5 (Core Feature Analysis) and Module 6 (Co-occurrence Analysis) for context.
+-   `--fdr_threshold <float>`
+    -   Global False Discovery Rate (FDR) threshold for statistical tests.
+    -   Default: `0.05`
+-   `--apptainer_images_dir <path>`
+    -   Path to the directory containing GeneCascade Apptainer images (.sif files).
+    -   Default: `GeneCascade_root/apptainer_images` (relative to the main GeneCascade script location).
+-   `--databases_directory <path>`
+    -   Path to the directory containing downloaded reference databases.
+    -   Default: `GeneCascade_root/databases` (relative to the main GeneCascade script location).
+-   `-f, --force_overwrite`
+    -   If set, forces the overwrite of existing output subdirectories for modules that are actively being run. Use with caution.
+
+### Optional Performance Parameters for `run`
+
+-   `-t, --threads <integer>`
+    -   Number of threads to use for computationally intensive tasks.
+    -   Default: `16`
+-   `--memory <value>`
+    -   Memory limit for MMseqs2 (e.g., "10G", "0" for unlimited).
+    -   Default: `"0"` (unlimited)
+-   `--future_globals_max_size_gb <integer>`
+    -   Maximum size (in GB) for R 'future' globals, affecting parallel processing in R scripts.
+    -   Default: `5`
+
+### Optional Skip Flags for `run`
+
+You can skip specific modules of the pipeline:
+
+-   `--skip_GC_01_preparation`: Skip Module 1 (Input Preparation).
+-   `--skip_GC_02_annotation`: Skip Module 2 (Sequence Annotation).
+-   `--skip_GC_03_clustering`: Skip Module 3 (Homology Clustering).
+-   `--skip_GC_04_master_table`: Skip Module 4 (Master Table Generation).
+-   `--skip_GC_05_core_features`: Skip Module 5 (Core Feature Analysis).
+-   `--skip_GC_06_cooccurrence`: Skip Module 6 (Co-occurrence Analysis).
+-   `--skip_GC_07_association`: Skip Module 7 (Association Studies).
+
+### Optional General Abundance Parameters for `run`
+
+These parameters define how feature abundance is interpreted, particularly for Modules 6 and 7.
+
+-   `--abundance_type <type>`
+    -   Type of feature abundance:
+        -   `binary`: Presence/absence.
+        -   `relative_abundance`: Normalized abundance values.
+        -   `absolute_abundance`: Raw count or absolute abundance values.
+    -   Default: `"binary"`
+-   `--abundance_column <column_name>`
+    -   If `--abundance_type` is `relative_abundance` or `absolute_abundance`, this specifies the column in your metadata file that contains the abundance values. Ignored if `binary`.
+
+### Optional Parameters for GC 1 (Sequence Preparation) for `run`
+
+-   `--sequence_type <type>`
+    -   Initial guess for the input sequence type: `protein` or `nucleotide`.
+    -   Default: Auto-detected by Module 1.
+
+### Optional Parameters for GC 2 (Annotation) for `run`
+
+-   `--annotation_db_priority <databases>`
+    -   Comma-separated list defining the priority of annotation databases (e.g., "Swiss-Prot,TrEMBL").
+    -   Default: `"Swiss-Prot_TrEMBL"` (Note: the script uses `_` as a separator in the default, but the help suggests `,` for user input. This might need clarification in the script's help or parsing.)
+-   `-s, --sensitivity <float>`
+    -   Sensitivity parameter for MMseqs2, used in Module 2 (Annotation) and Module 3 (Clustering).
+    -   Default: `5.7`
+
+### Optional Parameters for GC 3 (Clustering) for `run`
+
+-   `--min_sequence_identity <float>`
+    -   Minimum sequence identity for clustering (passed to MMseqs2 `--min-seq-id`).
+    -   Default: `0.5`
+-   `--min_coverage <float>`
+    -   Minimum coverage for clustering (passed to MMseqs2 `-c` or `--min-cov`).
+    -   Default: `0.8`
+-   `--coverage_mode <integer>`
+    -   Coverage mode for clustering (passed to MMseqs2 `--cov-mode`).
+    -   Default: `0`
+
+### Optional Parameters for GC 4 (Master Table Generation) for `run`
+
+-   `--master_table_basename <name>`
+    -   Basename for the main output data table file (e.g., `master_data_table.qs`).
+    -   Default: `"master_data_table"`
+
+### Optional Parameters for GC 5 (Core Feature Analysis) for `run`
+
+-   `--core_feature_prevalence_threshold <float>`
+    -   Prevalence threshold (0.0-1.0) for defining core features within a condition/niche.
+    -   Default: `0.9`
+
+### Optional Parameters for GC 6 (Co-occurrence Analysis) for `run`
+
+*(Context for GC 6 is set by `--genome_id_column`, `--sample_id_column`, `--condition_column` listed under Core Parameters)*
+
+**Homologue Group (HG) Filters & Pairwise Tests:**
+
+-   `--cooc_correlation_method <method>`
+    -   Correlation method for abundance data: `spearman` or `pearson`.
+    -   Default: `"spearman"`
+-   `--min_hg_occurrence_absolute <integer>`
+    -   Minimum absolute number of genomes/samples an HG must be present in.
+    -   Default: `10`
+-   `--min_hg_occurrence_fraction <float>`
+    -   Minimum fraction (0.0-1.0) of genomes/samples an HG must be present in.
+    -   Default: `0.01`
+-   `--max_hg_prevalence_percentage <float>`
+    -   Maximum prevalence percentage (0-100) for an HG to be included.
+    -   Default: `99.0`
+-   `--min_pair_cooccurrence_absolute <integer>`
+    -   Minimum absolute number of genomes/samples a pair of HGs must co-occur in.
+    -   Default: `5`
+-   `--min_pair_cooccurrence_fraction <float>`
+    -   Minimum fraction (0.0-1.0) of genomes/samples a pair of HGs must co-occur in.
+    -   Default: `0.005`
+-   `--min_hg_iqr_abundance <float>`
+    -   Minimum Interquartile Range (IQR) for HG abundance values (for non-binary abundance types).
+    -   Default: `0.0`
+-   `--min_correlation_metric <float>`
+    -   Minimum absolute pairwise correlation metric to consider a link.
+    -   Default: `0.0`
+-   `--pairwise_test_chunk_size <integer>`
+    -   Chunk size for processing pairs in R helper scripts, managing memory.
+    -   Default: `1000000`
+
+**Module Definition:**
+
+-   `--min_positive_module_correlation <float>`
+    -   Minimum positive correlation value for defining links within a co-occurrence module.
+    -   Default: `0.3`
+-   `--min_module_size <integer>`
+    -   Minimum number of HGs required to form a module.
+    -   Default: `3`
+-   `--community_detection_method <method>`
+    -   Algorithm for community detection (e.g., `cluster_louvain` from igraph).
+    -   Default: `"cluster_louvain"`
+-   `--core_module_strong_link_threshold <float>`
+    -   Correlation metric threshold for defining "strong links" within core modules.
+    -   Default: `0.7`
+
+**Competitive Module/Pathway Analysis:**
+
+-   `--inter_module_neg_metric_threshold <float>` (was `--inter_pathway_neg_metric_threshold`)
+    -   Negative correlation metric threshold for identifying potential competition between modules.
+    -   Default: `-0.2`
+-   `--inter_module_min_neg_links <integer>` (was `--inter_pathway_min_neg_links`)
+    -   Minimum number of negative links between two modules to consider them potentially competitive.
+    -   Default: `1`
+-   `--vs_core_neg_metric_threshold <float>`
+    -   Negative correlation metric threshold for competition between a module and core HGs.
+    -   Default: `-0.3`
+-   `--vs_core_min_frac_members <float>`
+    -   Minimum fraction of a module's members that must show negative correlation with core HGs.
+    -   Default: `0.25`
+-   `--vs_core_min_distinct_core_hgs <integer>`
+    -   Minimum number of distinct core HGs a module must show competition with.
+    -   Default: `1`
+
+### Optional Parameters for GC 7 (Association Studies - MaAsLin3) for `run`
+
+-   `--maaslin_fixed_effects <effects>`
+    -   Comma-separated list of metadata column names to be used as fixed effects in MaAsLin3. **Required if Module 7 is active.**
+-   `--maaslin_random_effects <effects>`
+    -   Comma-separated list of metadata column names for random effects.
+-   `--maaslin_reference_levels <levels>`
+    -   Semicolon-separated string defining reference levels for categorical variables in MaAsLin3 (e.g., "variable1,ref_level1;variable2,ref_level2").
+-   `--maaslin_observation_unit_column <column_name>`
+    -   Metadata column name representing the primary observation unit (e.g., sample IDs). **Required if Module 7 is active.**
+-   `--maaslin_genome_id_column <column_name>`
+    -   Optional metadata column for genome IDs, can be used e.g., as a random effect if relevant.
+-   `--maaslin_analysis_target <target>`
+    -   Feature type for MaAsLin3 analysis: `homologues`, `pathways`, or `both`.
+    -   Default: `"homologues"`
+-   `--maaslin_normalization <method>`
+    -   Normalization method for MaAsLin3.
+    -   Default: `"TSS"` (Total Sum Scaling) for quantitative data, `"NONE"` for binary.
+-   `--maaslin_transform <method>`
+    -   Data transformation for MaAsLin3.
+    -   Default: `"LOG"` for quantitative data, `"NONE"` for binary.
+-   `--maaslin_standardize <TRUE_FALSE>`
+    -   Whether to standardize continuous metadata variables (`TRUE` or `FALSE`).
+    -   Default: `"TRUE"`
+-   `--maaslin_min_feature_prevalence_fraction <float>`
+    -   Minimum fraction of samples in which a feature must be present to be included in MaAsLin3 analysis.
+    -   Default: `0.05`
+-   `--maaslin_min_feature_abundance_sum <float>`
+    -   Minimum total abundance sum for a feature across all samples (for non-binary data).
+    -   Default: `0` (for quantitative data, effectively no sum filter unless changed)
+
+## `genecascade install`
+
+This command launches the interactive installation utility.
+
+```bash
+genecascade install
 ```
 
-**Note:** Running StrainCascade is resource-intensive and will overwhelm standard desktop or laptop computers. For optimal performance, we strongly recommend using a high-performance computing (HPC) environment.
+This will present a menu to:
+-   Perform a full installation (Apptainer image + All Databases + Add to PATH).
+-   Install/Update the Apptainer image only.
+-   Install/Update all databases only.
+-   Add GeneCascade scripts to your system PATH.
+-   Check system requirements (Apptainer, Disk Space).
 
-For efficient execution, it's recommended to submit pipeline jobs as a SLURM SBATCH job. Below is an example of a basic SLURM submission script. Be sure to adjust the `--partition` parameter to match your environment:
+Refer to the [Installation](./installation.qmd) page for more details.
 
-``` bash
-#!/bin/bash 
-#SBATCH --job-name="StrainCascade" 
-#SBATCH --output=StrainCascade\_%j.out 
-#SBATCH --cpus-per-task=32 
-#SBATCH --mem-per-cpu=3G #96GB total 
-#SBATCH --partition=your_partition
+## Help and Version
 
-# Execute the job
-
-straincascade -i /path/to/your/input_file -t 32
-```
-
-To submit the script to your SLURM scheduler, use:
-
-``` bash
-sbatch your_SBATCH_script.sh
-```
-
-## Quick start (from assembly files)
-
-To quickly run StrainCascade on an already assembled genome from the command line interface, use the following minimal command:
-
-``` bash
-straincascade -a /path/to/your/input_file
-```
-
-**Note:** Running StrainCascade is resource-intensive and will overwhelm standard desktop or laptop computers. For optimal performance, we strongly recommend using a high-performance computing (HPC) environment.
-
-For efficient execution, it's recommended to submit pipeline jobs as a SLURM SBATCH job. Below is an example of a basic SLURM submission script. Be sure to adjust the `--partition` parameter to match your environment:
-
-``` bash
-#!/bin/bash 
-#SBATCH --job-name="StrainCascade" 
-#SBATCH --output=StrainCascade\_%j.out 
-#SBATCH --cpus-per-task=32 
-#SBATCH --mem-per-cpu=3G #96GB total 
-#SBATCH --partition=your_partition
-
-# Execute the job
-
-straincascade -a /path/to/your/input_file -t 32
-```
-
-To submit the script to your SLURM scheduler, use:
-
-``` bash
-sbatch your_SBATCH_script.sh
-```
-
-## High throughput SBATCH set-up (from sequencing files)
-
-For processing multiple sequencing files in a high-throughput manner, you can use a provided submission script that automates the creation of individual SLURM jobs for each input file contained in a specified input directory. Here's an example of how to set this up:
-
-First, navigate to the StrainCascade installation directory:
-
-``` bash
-cd $(dirname $(which straincascade))/..
-```
-
-Then you can generate batch submissions for multiple files as illustrated exemplarily below:
-
-``` bash
-# For minimal usage with required arguments only
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input_directory -p my_partition
-
-# With sequencing type
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input_directory -p my_partition -s pacbio-raw
-
-# With all optional parameters
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input_directory -p my_partition -s pacbio-raw -n user@example.com -f file_list.txt
-
-# Parameters can be in any order
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -s pacbio-hifi -i /path/to/input_directory -n user@example.com -p my_partition
-```
-
-**Further explanation:**
-
-``` console
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh
-Usage: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i <input_directory> -p <partition> [-s <sequencing_type>] [-n <notification>] [-f <file_list>]
-Required arguments:
-  -i <input_directory>: Directory containing input files
-  -p <partition>: SLURM partition to use for the job
-Optional arguments:
-  -s <sequencing_type>: Sequencing type (default: pacbio-hifi)
-                        Valid options: pacbio-raw, pacbio-corr, pacbio-hifi, nano-raw, nano-corr, nano-hq
-  -n <notification>: Email address for notifications
-  -f <file_list>: File with specific filenames to process (one filename per line)
-  -----------------------------------------------------------------
-  Example usage 1: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-raw
-  Example usage 2: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-hifi -n your.email@example.com -f file_list.txt
-```
-
--   By default the script will generate a submission script for each file in the input directory with one of the following endings: `.bam`, `fastq`, `fastq.gz`, `.fasta`, `fna` or `.fa`. The files will be submitted to the SLURM scheduler. Optionally, you can provide a text file (`file_list`) limiting execution to specific files in the input directory.
-
--   By default the script will execute a standard run of StainCascade for each of the samples as SBATCH job: `straincascade -a "$input_file" -r main -t 32` (using 96GB of RAM). If you are experienced with StrainCascade and using SBATCH and want to customize the execution, you can modify the script to your needs.
-
--   The script will submit the individual SLURM jobs with job configurations as shown below. Make sure that these are appropriate for your system (e.g., number of CPUs, memory allocation, time limits etc.).
-
-    ``` bash
-    #!/bin/bash
-    #--job-name=straincascade_${base_name}
-    #--output=${REPORT_DIR}/StrainCascade_${base_name}_%j.out
-    #--cpus-per-task=32
-    #--mem-per-cpu=3G
-    #--time=48:00:00
-    #--partition=$PARTITION
-    #--mail-user=$EMAIL
-    #--mail-type=end,fail
-    ```
-
-## High throughput SBATCH set-up (from assembly files)
-
-For processing multiple already assembled genomes in a high-throughput manner, you can use a provided submission script that automates the creation of individual SLURM jobs for each input file contained in a specified input directory. Here's an example of how to set this up:
-
-First, navigate to the StrainCascade installation directory:
-
-``` bash
-cd $(dirname $(which straincascade))/..
-```
-
-Then you can generate batch submissions for multiple files as illustrated exemplarily below:
-
-``` bash
-# For minimal usage with required arguments only
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh -i /path/to/input_directory -p my_partition
-
-# With sequencing type
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh -i /path/to/input_directory -p my_partition -s pacbio-raw
-
-# With all optional parameters
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh -i /path/to/input_directory -p my_partition -s pacbio-raw -n user@example.com -f file_list.txt
-
-# Parameters can be in any order
-./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_assembly_files.sh -s pacbio-hifi -i /path/to/input_directory -n user@example.com -p my_partition
-```
-
-**Further explanation:**
-
-``` console
-Usage: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i <input_directory> -p <partition> [-s <sequencing_type>] [-n <notification>] [-f <file_list>] [-c <cpus>] [-m <memory>]
-Required arguments:
-  -i <input_directory>: Directory containing input files
-  -p <partition>: SLURM partition to use for the job
-Optional arguments:
-  -s <sequencing_type>: Sequencing type (default: pacbio-hifi)
-                        Valid options: pacbio-raw, pacbio-corr, pacbio-hifi, nano-raw, nano-corr, nano-hq
-  -n <notification>: Email address for notifications
-  -f <file_list>: File with specific filenames to process (one filename per line)
-  -c <cpus>: Number of CPUs per task (default: 32)
-  -m <memory>: Memory per CPU in GB (default: 3)
-  -----------------------------------------------------------------
-  Example usage 1: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-raw
-  Example usage 2: ./scripts/SBATCH_scripts/StrainCascade_high_throughput_SBATCH_sequencing_files.sh -i /path/to/input/directory -p your_partition -s pacbio-hifi -n your.email@example.com -f file_list.txt -c 10 -m 5
-```
-
--   By default the script will generate a submission script for each file in the input directory with one of the following endings: `.fasta`, `fna` or `.fa`. The files will be submitted to the SLURM scheduler. Optionally, you can provide a text file (`file_list`) limiting execution to specific files in the input directory.
-
--   By default the script will execute a standard run of StainCascade for each of the samples as SBATCH job: `straincascade -a "$input_file" -r main -t 32` (using 96GB of RAM). If you are experienced with StrainCascade and using SBATCH and want to customize the execution, you can modify the script to your needs.
-
--   The script will submit the individual SLURM jobs with job configurations as shown below. Make sure that these are appropriate for your system (e.g., number of CPUs, memory allocation, time limits etc.).
-
-    ``` bash
-    #!/bin/bash
-    #--job-name=straincascade_${base_name}
-    #--output=${REPORT_DIR}/StrainCascade_${base_name}_%j.out
-    #--cpus-per-task=32
-    #--mem-per-cpu=3G
-    #--time=48:00:00
-    #--partition=$PARTITION
-    #--mail-user=$EMAIL
-    #--mail-type=end,fail
-    ```
-
-## Updating StrainCascade
-
-To keep your StrainCascade installation current, you can freshly [install new major releases](installation.qmd#default-installation-interactive) or [update existing components](installation.qmd#updating-your-existing-straincascade-installation). For instructions on installing new releases and updating StrainCascade components, please refer to \[Updating your existing StrainCascade installation\].
-
-## CAVEATS
-
--   **Conda environment and PATH variable in SBATCH jobs:** When submitting `sbatch` jobs, it is important to note that your Conda environment will not remain active. If you have multiple installations of StrainCascade, each installation will add its respective paths to the `PATH` variable. Only by activating the correct Conda environment in your `sbatch` script (not implement in above examples) will you ensure that the appropriate paths are used, allowing StrainCascade to function as expected. Without this activation, `sbatch` jobs may inadvertently use incorrect paths, potentially leading to errors or unexpected behaviour.
+-   `genecascade -h` or `genecascade --help`
+    -   Displays the detailed help message listing all commands and options.
+-   `genecascade -v` or `genecascade --version`
+    -   Shows the installed GeneCascade version.
