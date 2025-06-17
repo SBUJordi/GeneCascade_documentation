@@ -1,9 +1,9 @@
 /* Define custom properties */
 :root {
-  --main-navbar-color: #336392;
+  --main-navbar-color: #ed9a00;
   --main-font: 'Source Sans Pro', sans-serif;
-  --link-color: #336392;
-  --hover-color: #336392;
+  --link-color: #d48a00;
+  --hover-color: #d48a00;
   --inline-code-color: #333333;
   --inline-code-bg: #E6E6E6;
   --bash-code-color: #E6E6E6;
